@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Population Details</title>
+</head>
+<body>
+    <h1>Country Population Details</h1>
+    <input type="text" id="countryName" placeholder="Enter Country Name">
+    <button onclick="FetchPopulation()">Click</button>
+    <p id="demo"></p>
+    <script>
+        function FetchPopulation(){
+            let cn=document.getElementById("countryName").value.toUpperCase();
+            fetch("https://restcountries.com/v3.1/all?fields=name,population")
+            .then(Response=> Response.json())
+            .then(data=>{
+                let output=`<p>The population Of the ${cn}  Is:</p>`;
+                 let found=false;
+                data.forEach(country=>{
+                    let cntryName=country.name.common;
+                    if(cn==cntryName.toUpperCase()){
+                        output+=`<p>${country.population}</p>`;
+                        found=true;
+                    }
+                });
+                    if(!found){
+                         output+=`<p>${cn} not Found</p>`;
+                    }
+                  document.getElementById("demo").innerHTML=output;
+            })
+             .catch(Error=>{
+                document.getElementById("demo").innerHTML="error occurred";
+              })
+        }
+    </script>
+</body>
+</html>
