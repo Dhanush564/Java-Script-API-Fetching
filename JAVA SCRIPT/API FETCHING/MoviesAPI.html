@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies API Example</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .search-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+
+        td {
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #eef3ff;
+        }
+
+        .poster {
+            text-align: center;
+        }
+
+        .poster img {
+            width: 80px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .movie-details strong {
+            color: #000;
+        }
+
+        .error {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🎬 Movies API Example</h2>
+
+<div class="search-box">
+    <input type="text" id="movieName" placeholder="Enter Movie Name">
+    <button onclick="loadMovies()">Search</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+function loadMovies() {
+    let mn = document.getElementById("movieName").value.trim();
+
+    if (mn === "") {
+        document.getElementById("result").innerHTML =
+            "<p class='error'>Please enter a movie name</p>";
+        return;
+    }
+
+    fetch(`https://imdb.iamidiotareyoutoo.com/search?q=${mn}`)
+        .then(response => response.json())
+        .then(data => {
+
+            if (!data.description || data.description.length === 0) {
+                document.getElementById("result").innerHTML =
+                    "<p class='error'>No movies found</p>";
+                return;
+            }
+
+            let output = `
+                <table>
+                    <tr>
+                        <th>Poster</th>
+                        <th>Movie Details</th>
+                        <th>IMDb ID</th>
+                    </tr>
+            `;
+
+            data.description.forEach(movie => {
+                output += `
+                    <tr>
+                        <td class="poster">
+                            <img src="${movie["#IMG_POSTER"]}" alt="Poster">
+                        </td>
+                        <td class="movie-details">
+                            <strong>Title:</strong> ${movie["#TITLE"]}<br>
+                            <strong>Year:</strong> ${movie["#YEAR"]}<br>
+                            <strong>Rank:</strong> ${movie["#RANK"]}<br>
+                            <strong>Actors:</strong> ${movie["#ACTORS"]}
+                        </td>
+                        <td style="text-align:center;">
+                            ${movie["#IMDB_ID"]}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            output += "</table>";
+            document.getElementById("result").innerHTML = output;
+        })
+        .catch(() => {
+            document.getElementById("result").innerHTML =
+                "<p class='error'>Error occurred while fetching data</p>";
+        });
+}
+</script>
+
+</body>
+</html>
