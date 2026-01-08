@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Fetching Countries By First Letter</h1>
+    <input type="text" id="countryName" placeholder="Enter Country First Letter">
+    <button onclick="FetchByName()">Click</button>
+    <p id="demo"></p>
+
+    <script>
+        function FetchByName(){
+            let character=document.getElementById("countryName").value.toUpperCase();
+              fetch("https://restcountries.com/v3.1/all?fields=name")
+              .then(Response=> Response.json())
+              .then(data =>{
+                let output=`<p>Countries starting With Letter ${character} </p>`;
+                  data.forEach(country=>{
+                      let first=country.name.common;
+             
+                      if(first[0]==`${character}`){
+                        output+=`<p>${first}</p>`
+                      }
+                      document.getElementById("demo").innerHTML=output;
+                  });
+              })
+              .catch(Error=>{
+                document.getElementById("demo").innerHTML="error occurred";
+              })
+
+        }
+    </script>
+
+</body>
+</html>
