@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>REST Countries</title>
+</head>
+<body>
+<h2>REST Countries – Country Names</h2>
+<button onclick="loadCountries()">Load Countries</button>
+<div id="result"></div>
+<script>
+function loadCountries() {
+    fetch("https://restcountries.com/v3.1/all?fields=name,region")
+        .then(response => response.json())
+        .then(data => {
+            let output = "<h3>Countries List:</h3>";
+            data.forEach(country => {
+                output += `<p>${country.name.common} and Region: ${country.region}</p>`;
+            });
+            document.getElementById("result").innerHTML = output;
+        })
+        .catch(error => {
+            document.getElementById("result").innerHTML = "Error loading countries"
+        });
+}
+</script>
+</body>
+</html>

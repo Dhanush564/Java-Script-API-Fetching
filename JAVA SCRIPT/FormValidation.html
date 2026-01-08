@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Next Day Predictor</h1>
+    <form name="myForm" onsubmit="return validateForm()" method="post">
+        Enter the current Day: <input type="text" name="fname">
+        <input type="submit" value="Submit">
+
+        <h1 id="res"></h1>
+        <script>
+            function validateForm() {
+                var x = document.forms["myForm"]["fname"].value;
+                if (x == "") {
+                    alert("Name must be filled out");
+                    return false;
+                }
+                var days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+                x = x.toLowerCase();
+                var index = days.indexOf(x);
+                if (index == -1) {
+                    alert("Please enter a valid day of the week.");
+                    return false;
+                } else {
+                    var nextDay = days[(index + 1) % 7];
+                    document.getElementById("res").innerHTML="The next Day is: " + nextDay;
+                    document.getElementById("res").style.color="blue";
+                    document.getElementById("res").style.fontSize="24px";
+                    document.getElementById("res").style.fontWeight="bold";
+                    document.getElementById("res").style.fontFamily="Arial, sans-serif";
+                    document.getElementById("res").style.textTransform="capitalize";
+                    return false;
+                }
+            }
+        </script>   
+    </form>    
+</body>
+</html>

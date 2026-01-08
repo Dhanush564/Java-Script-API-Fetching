@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Days in a Week</h1>
+    <p id="demo"></p>
+    <script>
+        var days=["sunday","monday","tuesday", "wednesday", "thursday", "friday", "saturday"];
+        let res="";
+        for(let i=0;i<days.length;i++){
+           res+=days[i]+"<br>";
+        }
+        var node=document.getElementById("demo").innerHTML=res;
+        document.getElementById("demo").style.color="green";
+    </script>
+</body>
+</html>
