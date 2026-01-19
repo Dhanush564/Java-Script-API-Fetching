@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Countries Explorer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Countries Explorer</span>
+    </div>
+</nav>
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Search Country</h4>
+
+            <div class="input-group mb-3">
+                <input type="text" id="country" class="form-control"
+                       placeholder="Enter country name (eg: India)">
+                <button class="btn btn-primary" onclick="loadCountry()">Search</button>
+            </div>
+
+            <div id="result"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function loadCountry() {
+
+    let cname = document.getElementById("country").value;
+
+    if (cname === "") {
+        document.getElementById("result").innerHTML =
+            "<p class='text-danger'>Please enter a country name</p>";
+        return;
+    }
+
+    fetch(`https://restcountries.com/v3.1/name/${cname}`)
+        .then(response => response.json())
+        .then(data => {
+
+            let output = "<h5 class='mt-3'>Country Details</h5>";
+
+            data.forEach(country => {
+                output += `
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="${country.flags.png}" class="img-fluid rounded-start" alt="Flag">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">${country.name.common}</h5>
+                                <p class="card-text">
+                                    <b>Capital:</b> ${country.capital ? country.capital[0] : "N/A"} <br>
+                                    <b>Region:</b> ${country.region} <br>
+                                    <b>Country Population:</b> ${country.population}<br>
+                                    <b>Languages:</b> ${country.languages ? Object.values(country.languages).join(", ") : "N/A"}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            document.getElementById("result").innerHTML = output;
+        })
+        .catch(error => {
+            document.getElementById("result").innerHTML =
+                "<p class='text-danger'>Country not found</p>";
+        });
+}
+</script>
+
+</body>
+</html>
